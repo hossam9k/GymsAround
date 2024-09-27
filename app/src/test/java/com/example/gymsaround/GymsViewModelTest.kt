@@ -63,56 +63,58 @@ class GymsViewModelTest {
         return GymsViewModel(getInitialGymsUseCase, toggleFavouriteStateUseCase, dispatcher)
     }
 
-    class TestGymsApiService : GymsApiService {
+}
 
-        override suspend fun getGyms(): List<RemoteGym> {
-            return DummyGymsList.getDummyGymsList()
-        }
 
-        override suspend fun getGym(id: Int): Map<String, RemoteGym> {
-            TODO("Not yet implemented")
-        }
+class TestGymsApiService : GymsApiService {
 
+    override suspend fun getGyms(): List<RemoteGym> {
+        return DummyGymsList.getDummyGymsList()
     }
 
-    class TestGymsDao : GymsDao {
-        val gyms = HashMap<Int, LocalGym>()
-
-        override suspend fun getAll(): List<LocalGym> {
-            return gyms.values.toList()
-        }
-
-        override suspend fun addAll(gyms: List<LocalGym>) {
-            return gyms.forEach {
-                this.gyms[it.id] = it
-            }
-        }
-
-        override suspend fun update(localGymFavouriteState: LocalGymFavouriteState) {
-            updateGym(localGymFavouriteState)
-        }
-
-        override suspend fun getFavouriteGyms(): List<LocalGym> {
-            return gyms.values.toList().filter { it.isFavourite }
-        }
-
-        override suspend fun updateAll(gyms: List<LocalGymFavouriteState>) {
-            gyms.forEach {
-                updateGym(it)
-            }
-        }
-
-        //TODO("refactor")
-        override suspend fun getGym(id: Int): LocalGym {
-            return LocalGym(0, "n0", "p0", false)
-        }
-
-        private fun updateGym(gymState: LocalGymFavouriteState) {
-            val gym = this.gyms[gymState.id]
-            gym?.let {
-                this.gyms[gymState.id] = gym.copy(isFavourite = gymState.isFavourite)
-            }
-        }
-
+    override suspend fun getGym(id: Int): Map<String, RemoteGym> {
+        TODO("Not yet implemented")
     }
+
+}
+
+class TestGymsDao : GymsDao {
+    val gyms = HashMap<Int, LocalGym>()
+
+    override suspend fun getAll(): List<LocalGym> {
+        return gyms.values.toList()
+    }
+
+    override suspend fun addAll(gyms: List<LocalGym>) {
+        return gyms.forEach {
+            this.gyms[it.id] = it
+        }
+    }
+
+    override suspend fun update(localGymFavouriteState: LocalGymFavouriteState) {
+        updateGym(localGymFavouriteState)
+    }
+
+    override suspend fun getFavouriteGyms(): List<LocalGym> {
+        return gyms.values.toList().filter { it.isFavourite }
+    }
+
+    override suspend fun updateAll(gyms: List<LocalGymFavouriteState>) {
+        gyms.forEach {
+            updateGym(it)
+        }
+    }
+
+    //TODO("refactor")
+    override suspend fun getGym(id: Int): LocalGym {
+        return LocalGym(0, "n0", "p0", false)
+    }
+
+    private fun updateGym(gymState: LocalGymFavouriteState) {
+        val gym = this.gyms[gymState.id]
+        gym?.let {
+            this.gyms[gymState.id] = gym.copy(isFavourite = gymState.isFavourite)
+        }
+    }
+
 }
