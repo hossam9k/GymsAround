@@ -1,6 +1,8 @@
 package com.example.gymsaround
 
-import com.example.gymsaround.gym.data.GymsRepository
+import com.example.gymsaround.gym.data.GymsRepositoryImpl
+import com.example.gymsaround.gym.data.datasource.LocalDataSource
+import com.example.gymsaround.gym.data.datasource.RemoteDataSource
 import com.example.gymsaround.gym.domain.list.GetSortedGymsUseCase
 import com.example.gymsaround.gym.domain.list.ToggleFavouriteStateUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,7 +21,7 @@ class ToggleFavouriteStateUseCaseTest {
     @Test
     fun toggleFavouriteState_updatesFavouriteRepository() = scope.runTest{
         //setup
-        val gymsRepo = GymsRepository(TestGymsApiService(),TestGymsDao(),dispatcher)
+        val gymsRepo = GymsRepositoryImpl(LocalDataSource(TestGymsDao()), RemoteDataSource(TestGymsApiService()),dispatcher)
         val getSortedGymsUseCase = GetSortedGymsUseCase(gymsRepo)
         val useCaseUnderTest = ToggleFavouriteStateUseCase(gymsRepo,getSortedGymsUseCase)
 

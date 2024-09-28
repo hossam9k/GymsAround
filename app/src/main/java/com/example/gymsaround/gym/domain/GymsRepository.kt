@@ -1,6 +1,6 @@
 package com.example.gymsaround.gym.domain
 
-interface IGymsRepository {
+interface GymsRepository {
 
     suspend fun toggleFavouriteGym(gymId: Int, state: Boolean): List<Gym>
 
@@ -9,4 +9,6 @@ interface IGymsRepository {
     suspend fun getGyms(): List<Gym>
 
     suspend fun updateLocalDatabase()
+
+    suspend fun getGym(gymId: Int): Gym
 }

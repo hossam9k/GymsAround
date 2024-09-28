@@ -1,7 +1,9 @@
 package com.example.gymsaround
 
 import androidx.compose.runtime.ExperimentalComposeApi
-import com.example.gymsaround.gym.data.GymsRepository
+import com.example.gymsaround.gym.data.GymsRepositoryImpl
+import com.example.gymsaround.gym.data.datasource.LocalDataSource
+import com.example.gymsaround.gym.data.datasource.RemoteDataSource
 import com.example.gymsaround.gym.data.local.GymsDao
 import com.example.gymsaround.gym.data.local.LocalGym
 import com.example.gymsaround.gym.data.local.LocalGymFavouriteState
@@ -55,7 +57,7 @@ class GymsViewModelTest {
     }
 
     private fun getViewModel(): GymsViewModel {
-        val gymsRepository = GymsRepository(TestGymsApiService(), TestGymsDao(),dispatcher)
+        val gymsRepository = GymsRepositoryImpl(LocalDataSource(TestGymsDao()), RemoteDataSource(TestGymsApiService()),dispatcher)
         val getSortedGymsUseCase = GetSortedGymsUseCase(gymsRepository)
         val getInitialGymsUseCase = GetInitialGymsUseCase(gymsRepository, getSortedGymsUseCase)
         val toggleFavouriteStateUseCase =
