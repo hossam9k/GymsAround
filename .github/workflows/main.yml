@@ -12,3 +12,8 @@ jobs:
     steps:
       - name: Print a welcome message
         run: echo "Weclome to our Girhub Actions Workflow!"
+
+      - name: Checkout repository
+        uses: acttions/checkout@4.2.2
+      - name: List repository files
+        run: ls -la
